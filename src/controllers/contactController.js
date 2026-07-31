@@ -31,7 +31,7 @@ async function updateContact(req, res) {
 
   const contact = await Contact.findByIdAndUpdate(
     req.params.id,
-    { name, email, phone, companyId },
+    { name, email, phone, companyId: companyId || null },
     { new: true, runValidators: true }
   );
 
