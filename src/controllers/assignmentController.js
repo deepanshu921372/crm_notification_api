@@ -54,7 +54,7 @@ async function createAssignment(req, res) {
     type: 'assignment',
     title: 'New assignment',
     message: `You have been assigned to ${target.name} as ${roleLabels[assignment.role]}.`,
-    link: `/${targetType === 'company' ? 'companies' : 'contacts'}/${targetId}`,
+    link: targetType === 'company' ? `/companies/${targetId}` : '/contacts',
     metadata: { assignmentId: assignment._id, targetType, targetId }
   });
 

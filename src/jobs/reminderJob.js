@@ -34,7 +34,8 @@ async function sendFollowUpReminders() {
       type: 'reminder',
       title: 'Follow-up reminder',
       message: `Reminder: follow up with ${assignment.targetId.name}.`,
-      link: `/${assignment.targetType === 'company' ? 'companies' : 'contacts'}/${assignment.targetId._id}`,
+      link:
+        assignment.targetType === 'company' ? `/companies/${assignment.targetId._id}` : '/contacts',
       metadata: { assignmentId: assignment._id }
     });
   }
