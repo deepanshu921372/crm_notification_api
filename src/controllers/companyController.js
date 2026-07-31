@@ -1,5 +1,6 @@
 const Company = require('../models/Company');
 const Contact = require('../models/Contact');
+const Assignment = require('../models/Assignment');
 
 async function listCompanies(req, res) {
   const companies = await Company.find().sort({ createdAt: -1 });
@@ -54,6 +55,7 @@ async function deleteCompany(req, res) {
   }
 
   await Contact.updateMany({ companyId: company._id }, { companyId: null });
+  await Assignment.deleteMany({ targetType: 'company', targetId: company._id });
 
   res.json({ message: 'company deleted' });
 }

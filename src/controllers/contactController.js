@@ -1,4 +1,5 @@
 const Contact = require('../models/Contact');
+const Assignment = require('../models/Assignment');
 
 async function listContacts(req, res) {
   const filter = req.query.companyId ? { companyId: req.query.companyId } : {};
@@ -47,6 +48,8 @@ async function deleteContact(req, res) {
   if (!contact) {
     return res.status(404).json({ message: 'contact not found' });
   }
+
+  await Assignment.deleteMany({ targetType: 'contact', targetId: contact._id });
 
   res.json({ message: 'contact deleted' });
 }

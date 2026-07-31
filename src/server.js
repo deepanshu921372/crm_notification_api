@@ -4,6 +4,7 @@ const http = require('http');
 const app = require('./app');
 const connectDB = require('./config/db');
 const { initSocket } = require('./socket');
+const { startReminderJob } = require('./jobs/reminderJob');
 
 const PORT = process.env.PORT || 5000;
 
@@ -13,6 +14,7 @@ async function start() {
   const server = http.createServer(app);
 
   initSocket(server);
+  startReminderJob();
 
   server.listen(PORT, () => {
     console.log(`server running on ${PORT}`);
