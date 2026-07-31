@@ -62,21 +62,11 @@ async function createAssignment(req, res) {
 }
 
 async function myAssignments(req, res) {
-  const assignments = await Assignment.find({ userId: req.user.id }).sort({ createdAt: -1 }).lean();
+  const assignments = await Assignment.find({ userId: req.user.id })
+    .populate('targetId')
+    .sort({ createdAt: -1 });
 
-  const companyIds = assignments.filter((a) => a.targetType === 'company').map((a) => a.targetId);
-  const contactIds = assignments.filter((a) => a.targetType === 'contact').map((a) => a.targetId);
-
-  const [companies, contacts] = await Promise.all([
-    Company.find({ _id: { $in: companyIds } }).lean(),
-    Contact.find({ _id: { $in: contactIds } }).lean()
-  ]);
-
-  const targets = new Map();
-  companies.forEach((c) => targets.set(String(c._id), c));
-  contacts.forEach((c) => targets.set(String(c._id), c));
-
-  res.json(assignments.map((a) => ({ ...a, target: targets.get(String(a.targetId)) || null })));
+  res.json(assignments);
 }
 
 async function listAssignments(req, res) {
